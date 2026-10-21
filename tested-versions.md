@@ -8,6 +8,7 @@
 | LiteLLM | 1.106.1 | 2026-10-21 | 1.82.7·1.82.8 사용 금지 |
 | LiteLLM Proxy Docker 이미지 | `docker.litellm.ai/berriai/litellm:v1.106.1` | 2026-10-21 | `sha256:1acf80698f7eb47021b0bf5aed01ba9e80098cf74cdb3e588515bdd48a129fa6` |
 | openai (Python SDK) | 2.54.0 | 2026-10-21 | litellm 의존성으로 설치됨 |
+| mcp | 2.3.0 | 2026-10-21 | `litellm[mcp]`로 설치. 1.106.x의 Tool Calling에 필요 (#46045) |
 | Docker / Docker Compose | 29.1.3 / v2.39.2 | 2026-10-21 | |
 | Ollama | (실측 후 기록) | | |
 | vLLM | (실측 후 기록) | | |

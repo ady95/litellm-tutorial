@@ -1,0 +1,10 @@
+# 애플리케이션은 왼쪽의 별칭만 안다. 실제 모델은 이 파일에서 바꾼다.
+fast:
+  model: openai/gpt-6-luna
+  api_key: os.environ/OPENAI_API_KEY
+smart:
+  model: anthropic/claude-sonnet-5-5
+  api_key: os.environ/ANTHROPIC_API_KEY
+gemini:
+  model: openrouter/google/gemini-3.8-flash
+  api_key: os.environ/OPENROUTER_API_KEY
