@@ -1,0 +1,40 @@
+# 06-1~06-3. Mock 서버로 라우팅·재시도·Fallback·쿨다운 실험
+model_list:
+  # 부하 분산: 같은 별칭에 배포 두 개, 가중치 3:1
+  - model_name: pool
+    litellm_params: {model: openai/ok-d50, api_base: os.environ/MOCK_API_BASE, api_key: mock, weight: 3}
+  - model_name: pool
+    litellm_params: {model: openai/ok-d500, api_base: os.environ/MOCK_API_BASE, api_key: mock, weight: 1}
+
+  # 항상 429 / 항상 500
+  - model_name: always-429
+    litellm_params: {model: openai/e429, api_base: os.environ/MOCK_API_BASE, api_key: mock}
+  - model_name: always-500
+    litellm_params: {model: openai/e500, api_base: os.environ/MOCK_API_BASE, api_key: mock}
+
+  # Fallback: 1차가 실패하면 backup으로
+  - model_name: primary
+    litellm_params: {model: openai/e500, api_base: os.environ/MOCK_API_BASE, api_key: mock}
+  - model_name: backup
+    litellm_params: {model: openai/ok, api_base: os.environ/MOCK_API_BASE, api_key: mock}
+
+  # 타임아웃: 응답 없는 서버를 3초 만에 포기하고 backup으로
+  - model_name: slow
+    litellm_params: {model: openai/hang, api_base: os.environ/MOCK_API_BASE, api_key: mock, timeout: 3}
+
+  # 쿨다운: 고장 난 배포와 정상 배포가 섞인 별칭
+  - model_name: mixed
+    litellm_params: {model: openai/e500-mixed, api_base: os.environ/MOCK_API_BASE, api_key: mock}
+  - model_name: mixed
+    litellm_params: {model: openai/ok-mixed, api_base: os.environ/MOCK_API_BASE, api_key: mock}
+
+router_settings:
+  num_retries: 2
+  allowed_fails: 1        # 1분 안에 이 횟수를 넘겨 실패하면
+  cooldown_time: 30       # 그 배포를 30초 동안 제외
+  fallbacks:
+    - primary: [backup]
+    - slow: [backup]
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY

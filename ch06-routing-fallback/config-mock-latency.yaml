@@ -1,0 +1,12 @@
+# 06-1. 지연 기반 라우팅: 빠른 배포에 더 많이 보낸다
+model_list:
+  - model_name: pool
+    litellm_params: {model: openai/ok-d50, api_base: os.environ/MOCK_API_BASE, api_key: mock}
+  - model_name: pool
+    litellm_params: {model: openai/ok-d500, api_base: os.environ/MOCK_API_BASE, api_key: mock}
+
+router_settings:
+  routing_strategy: latency-based-routing
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY

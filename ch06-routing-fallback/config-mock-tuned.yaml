@@ -1,0 +1,23 @@
+# 06-2. 재시도 정책을 오류 유형별로 조정해 Fallback을 빠르게
+model_list:
+  - model_name: primary
+    litellm_params: {model: openai/e500, api_base: os.environ/MOCK_API_BASE, api_key: mock}
+  - model_name: backup
+    litellm_params: {model: openai/ok, api_base: os.environ/MOCK_API_BASE, api_key: mock}
+  - model_name: slow
+    litellm_params: {model: openai/hang, api_base: os.environ/MOCK_API_BASE, api_key: mock, timeout: 3}
+  - model_name: always-429
+    litellm_params: {model: openai/e429, api_base: os.environ/MOCK_API_BASE, api_key: mock}
+
+router_settings:
+  num_retries: 2
+  retry_policy:
+    InternalServerErrorRetries: 0   # 서버 오류는 바로 Fallback
+    TimeoutErrorRetries: 0          # 타임아웃도 바로 Fallback
+    RateLimitErrorRetries: 2        # 속도 제한은 잠시 뒤 다시 시도
+  fallbacks:
+    - primary: [backup]
+    - slow: [backup]
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
