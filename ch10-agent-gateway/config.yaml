@@ -1,0 +1,30 @@
+# 10장. 에이전트 공용 Gateway (9장 운영 구성의 config.yaml을 교체)
+model_list:
+  - model_name: local
+    litellm_params:
+      model: hosted_vllm/qwen3.5-9b
+      api_base: os.environ/VLLM_API_BASE
+      reasoning_effort: none
+    model_info:
+      max_input_tokens: 32768
+      max_output_tokens: 8192
+  - model_name: fast
+    litellm_params:
+      model: openai/gpt-6-luna
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: smart
+    litellm_params:
+      model: anthropic/claude-sonnet-5-5
+      api_key: os.environ/ANTHROPIC_API_KEY
+  - model_name: gemini
+    litellm_params:
+      model: openrouter/google/gemini-3.8-flash
+      api_key: os.environ/OPENROUTER_API_KEY
+
+litellm_settings:
+  drop_params: true
+  request_timeout: 300
+  callbacks: ["prometheus"]
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY

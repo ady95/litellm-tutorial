@@ -1,0 +1,1 @@
+inventory.py의 Inventory 클래스에 두 기능을 추가하세요. (1) remove(name, qty): 재고를 줄이며, 없는 품목이거나 재고가 부족하면 ValueError를 발생시키고 재고가 0이 되면 품목을 삭제합니다. (2) total_value(): 모든 품목의 수량×단가 합계를 돌려줍니다. 기존 tests가 계속 통과해야 합니다.

@@ -1,0 +1,9 @@
+# ~/.codex/config.toml — Codex CLI를 LiteLLM Gateway로
+model = "fast"
+model_provider = "litellm"
+
+[model_providers.litellm]
+name = "LiteLLM Gateway"
+base_url = "https://GATEWAY_HOST:8443/v1"
+env_key = "LITELLM_API_KEY"
+wire_api = "responses"

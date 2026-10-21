@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "litellm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LiteLLM Gateway",
+      "options": {
+        "baseURL": "https://GATEWAY_HOST:8443/v1",
+        "apiKey": "{env:LITELLM_API_KEY}"
+      },
+      "models": {
+        "local": { "limit": { "context": 32768, "output": 8192 } },
+        "fast": {}, "smart": {}, "gemini": {}
+      }
+    }
+  },
+  "model": "litellm/fast",
+  "permission": { "edit": "allow", "bash": "allow" }
+}

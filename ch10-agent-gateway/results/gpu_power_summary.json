@@ -1,0 +1,11 @@
+{
+  "gpu": "RTX 3090 24GB (power limit 420W)",
+  "window": "2026-10-22 03:20:36 ~ 03:59:06 (시나리오 2·3회차 동안, 5초 간격 nvidia-smi)",
+  "samples": 463,
+  "busy_samples_util_gt_0": 175,
+  "busy_avg_watt": 362.2,
+  "max_watt": 392.75,
+  "idle_between_tasks_avg_watt": 65.5,
+  "idle_before_run_watt": 23.04,
+  "note": "모델(Qwen3.5-9B BF16)을 GPU에 올려 둔 상태의 값"
+}

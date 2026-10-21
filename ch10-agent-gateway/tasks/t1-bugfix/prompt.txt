@@ -1,0 +1,1 @@
+stats.py의 mean과 median 함수에 버그가 있습니다. 빈 리스트에서는 ValueError를 발생시키고, 짝수 개일 때 median은 가운데 두 값의 평균이어야 합니다. 함수를 고치고 python3 -m pytest -q 로 tests를 통과시키세요.
