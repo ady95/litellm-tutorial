@@ -1,0 +1,30 @@
+model_list:
+  - model_name: local
+    litellm_params:
+      model: hosted_vllm/qwen3.5-9b
+      api_base: os.environ/VLLM_API_BASE
+      reasoning_effort: none
+  - model_name: fast
+    litellm_params:
+      model: openai/gpt-6-luna
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: smart
+    litellm_params:
+      model: anthropic/claude-sonnet-5-5
+      api_key: os.environ/ANTHROPIC_API_KEY
+
+  # 예산 실험용 가짜 모델: 호출 1번에 정확히 0.01달러가 나오도록 단가를 지정
+  # (Mock 서버는 입력 10토큰 + 출력 5토큰 = 15토큰을 보고한다)
+  - model_name: mock
+    litellm_params:
+      model: openai/ok
+      api_base: os.environ/MOCK_API_BASE
+      api_key: mock
+      input_cost_per_token: 0.0005
+      output_cost_per_token: 0.001
+
+litellm_settings:
+  drop_params: true
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
