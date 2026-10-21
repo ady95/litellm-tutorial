@@ -1,0 +1,26 @@
+model_list:
+  - model_name: fast
+    litellm_params:
+      model: openai/gpt-6-luna
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: smart
+    litellm_params:
+      model: anthropic/claude-sonnet-5-5
+      api_key: os.environ/ANTHROPIC_API_KEY
+  - model_name: gemini
+    litellm_params:
+      model: openrouter/google/gemini-3.8-flash
+      api_key: os.environ/OPENROUTER_API_KEY
+  # 등록하지 않은 OpenRouter 모델도 이름 그대로 통과시키는 와일드카드
+  - model_name: openrouter/*
+    litellm_params:
+      model: openrouter/*
+      api_key: os.environ/OPENROUTER_API_KEY
+
+litellm_settings:
+  drop_params: true
+  num_retries: 2
+  request_timeout: 60
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
