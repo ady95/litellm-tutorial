@@ -1,0 +1,38 @@
+{
+  "$schema": "https://www.getbifrost.ai/schema",
+  "client": {
+    "enable_logging": false,
+    "drop_excess_requests": false
+  },
+  "providers": {
+    "openai": {
+      "keys": [
+        { "name": "mock", "value": "mock", "models": ["ok"], "weight": 1.0 }
+      ],
+      "network_config": {
+        "base_url": "http://MOCK_HOST:8901",
+        "allow_private_network": true,
+        "default_request_timeout_in_seconds": 120
+      },
+      "concurrency_and_buffer_size": { "concurrency": 2000, "buffer_size": 10000 }
+    },
+    "vllm": {
+      "keys": [
+        {
+          "name": "vllm",
+          "value": "none",
+          "models": ["qwen3.5-9b"],
+          "weight": 1.0,
+          "vllm_key_config": { "url": "http://GPU_HOST:8000", "model_name": "qwen3.5-9b" }
+        }
+      ],
+      "network_config": {
+        "allow_private_network": true,
+        "default_request_timeout_in_seconds": 120
+      },
+      "concurrency_and_buffer_size": { "concurrency": 2000, "buffer_size": 10000 }
+    }
+  },
+  "config_store": { "enabled": false },
+  "logs_store": { "enabled": false }
+}

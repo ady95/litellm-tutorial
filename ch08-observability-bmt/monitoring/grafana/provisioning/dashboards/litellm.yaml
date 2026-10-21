@@ -1,0 +1,7 @@
+apiVersion: 1
+providers:
+  - name: litellm
+    folder: LiteLLM
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards

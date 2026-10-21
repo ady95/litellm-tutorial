@@ -1,0 +1,11 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: litellm
+    metrics_path: /metrics/          # /metrics 는 /metrics/ 로 리다이렉트된다
+    authorization:
+      type: Bearer
+      credentials_file: /etc/prometheus/litellm_metrics_key   # 저장소에 넣지 않는다
+    static_configs:
+      - targets: ["host.docker.internal:4000"]

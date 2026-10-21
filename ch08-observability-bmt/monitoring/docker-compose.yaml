@@ -1,0 +1,26 @@
+# 8장. LiteLLM 지표를 모으는 Prometheus + Grafana
+# 이미 다른 Prometheus/Grafana가 있는 서버를 고려해 9095, 3005 포트를 쓴다
+services:
+  prometheus:
+    image: prom/prometheus:v3.15.0
+    ports:
+      - "9095:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./litellm_metrics_key:/etc/prometheus/litellm_metrics_key:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:13.2.4
+    ports:
+      - "3005:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
+    restart: unless-stopped

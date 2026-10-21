@@ -1,0 +1,11 @@
+{"target": "direct", "concurrency": 1, "n": 20, "first_byte_p50_ms": 109.0, "ttft_p50_ms": 109.3, "ttft_p95_ms": 109.6, "total_p50_ms": 2787.0}
+{"target": "direct", "concurrency": 8, "n": 32, "first_byte_p50_ms": 184.8, "ttft_p50_ms": 185.1, "ttft_p95_ms": 206.6, "total_p50_ms": 2958.1}
+{"target": "direct", "concurrency": 32, "n": 128, "first_byte_p50_ms": 396.0, "ttft_p50_ms": 396.2, "ttft_p95_ms": 467.4, "total_p50_ms": 3961.9}
+{"target": "litellm-1w", "concurrency": 1, "n": 20, "first_byte_p50_ms": 125.5, "ttft_p50_ms": 125.6, "ttft_p95_ms": 134.0, "total_p50_ms": 2820.1}
+{"target": "litellm-1w", "concurrency": 8, "n": 32, "first_byte_p50_ms": 244.8, "ttft_p50_ms": 244.9, "ttft_p95_ms": 302.5, "total_p50_ms": 3150.2}
+{"target": "litellm-1w", "concurrency": 32, "n": 128, "first_byte_p50_ms": 469.3, "ttft_p50_ms": 469.5, "ttft_p95_ms": 674.2, "total_p50_ms": 4639.1}
+{"target": "bifrost", "concurrency": 1, "n": 20, "first_byte_p50_ms": 112.3, "ttft_p50_ms": 112.4, "ttft_p95_ms": 113.8, "total_p50_ms": 2785.9}
+{"target": "bifrost", "concurrency": 8, "n": 32, "first_byte_p50_ms": 187.2, "ttft_p50_ms": 187.3, "ttft_p95_ms": 207.0, "total_p50_ms": 2953.5}
+{"target": "bifrost", "concurrency": 32, "n": 128, "first_byte_p50_ms": 311.9, "ttft_p50_ms": 312.0, "ttft_p95_ms": 354.9, "total_p50_ms": 3958.4}
+{"target": "litellm-4w", "concurrency": 8, "n": 32, "first_byte_p50_ms": 218.2, "ttft_p50_ms": 218.3, "ttft_p95_ms": 244.4, "total_p50_ms": 3037.8}
+{"target": "litellm-4w", "concurrency": 32, "n": 128, "first_byte_p50_ms": 333.4, "ttft_p50_ms": 333.5, "ttft_p95_ms": 474.3, "total_p50_ms": 4079.8, "gateway_cpu_avg": 96.3, "gateway_cpu_max": 170.1}

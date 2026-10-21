@@ -1,0 +1,18 @@
+# 8장 BMT용 LiteLLM 설정: DB·로그 없이 순수 중계만
+model_list:
+  - model_name: bench
+    litellm_params:
+      model: openai/ok
+      api_base: os.environ/MOCK_API_BASE      # http://<부하-서버>:8901/v1
+      api_key: mock
+  - model_name: qwen
+    litellm_params:
+      model: hosted_vllm/qwen3.5-9b
+      api_base: os.environ/VLLM_API_BASE   # 생각 모드는 요청 본문의 chat_template_kwargs로 세 경로 모두 동일하게 끈다
+
+litellm_settings:
+  num_retries: 0
+  request_timeout: 120
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
