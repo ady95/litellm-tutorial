@@ -1,0 +1,52 @@
+# 9장. 운영용 구성: HTTPS 리버스 프록시 + 관리 경로 분리 + DB 내부망
+services:
+  caddy:
+    image: caddy:2.10.2
+    ports:
+      - "8443:8443"               # 외부 공개: HTTPS, 모델 호출 경로만
+      - "127.0.0.1:8444:8444"     # 관리용: 이 서버 안에서만 접근
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./certs:/certs:ro
+    networks: [edge]
+    depends_on: [litellm]
+    restart: unless-stopped
+
+  litellm:
+    # 태그와 digest를 함께 고정 (09-4)
+    image: docker.litellm.ai/berriai/litellm:v1.106.1@sha256:1acf80698f7eb47021b0bf5aed01ba9e80098cf74cdb3e588515bdd48a129fa6
+    command: ["--config", "/app/config.yaml", "--num_workers", "4"]
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://litellm:${POSTGRES_PASSWORD}@db:5432/litellm
+    networks: [edge, data]        # 포트를 공개하지 않는다. 외부 제공자 호출은 edge로
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: litellm
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: litellm
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: [data]              # 외부와 단절된 내부망에만
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U litellm"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+networks:
+  edge: {}
+  data:
+    internal: true                # 이 네트워크에서는 인터넷으로 나갈 수 없다
+
+volumes:
+  pgdata:

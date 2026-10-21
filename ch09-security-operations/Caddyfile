@@ -1,0 +1,21 @@
+{
+	auto_https off
+}
+
+# 외부 공개 입구: 모델 호출과 상태 확인만 통과시킨다
+:8443 {
+	tls /certs/cert.pem /certs/key.pem
+
+	@public path /v1/chat/completions /v1/completions /v1/embeddings /v1/responses* /v1/messages* /v1/models /health/liveliness /health/readiness
+	handle @public {
+		reverse_proxy litellm:4000
+	}
+	handle {
+		respond "Forbidden" 403
+	}
+}
+
+# 관리용 입구: 127.0.0.1에만 열려 있으므로 서버 안(또는 SSH 터널)에서만 접근
+:8444 {
+	reverse_proxy litellm:4000
+}
