@@ -42,8 +42,14 @@ def compose(*args):
 
 
 def started_at():
-    container = compose("ps", "-q", "litellm")
-    r = subprocess.run(["docker", "inspect", "-f", "{{.State.StartedAt}}", container], capture_output=True, text=True)
+    """litellm 컨테이너의 시작 시각. 컨테이너가 하나가 아니거나 조회에 실패하면 멈춘다."""
+    ids = compose("ps", "-q", "litellm").split()
+    if len(ids) != 1:
+        sys.exit(f"litellm 컨테이너를 하나로 특정할 수 없습니다: {ids}")
+    r = subprocess.run(["docker", "inspect", "-f", "{{.State.StartedAt}}", ids[0]], capture_output=True, text=True,
+                       stdin=subprocess.DEVNULL)
+    if r.returncode != 0 or not r.stdout.strip():
+        sys.exit(f"컨테이너 시작 시각을 읽지 못했습니다: {r.stderr.strip()}")
     return r.stdout.strip()
 
 

@@ -26,9 +26,10 @@ class Answer:
 
 
 def _resolve(value):
-    """config의 'os.environ/이름' 표기를 실제 환경변수 값으로 바꾼다. 없으면 None으로 둔다."""
+    """config의 'os.environ/이름' 표기를 실제 환경변수 값으로 바꾼다.
+    변수가 없거나 빈 값(공백만 있는 값 포함)이면 None으로 둔다. .env.example을 복사해 비워 둔 키도 여기에 해당한다."""
     if isinstance(value, str) and value.startswith("os.environ/"):
-        return os.environ.get(value.removeprefix("os.environ/"))
+        return (os.environ.get(value.removeprefix("os.environ/")) or "").strip() or None
     return value
 
 
@@ -77,5 +78,8 @@ def ask(alias, prompt, system=None, **options):
 
 
 if __name__ == "__main__":
-    for alias in MODELS:
+    for alias, params in MODELS.items():
+        if None in params.values():   # 키가 없는 별칭은 건너뛴다
+            print(f"{alias}: 키 없음, 건너뜀")
+            continue
         print(ask(alias, "LiteLLM을 한 문장으로 설명하세요.", temperature=0.2))
