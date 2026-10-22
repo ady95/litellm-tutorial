@@ -6,7 +6,8 @@ load_dotenv()
 
 stream = litellm.completion(
     model="openai/gpt-6-luna",
-    messages=[{"role": "user", "content": "숫자 1부터 5까지 쉼표로 이어서 써 주세요."}],
+    messages=[{"role": "user",
+               "content": "숫자 1부터 5까지 쉼표로 이어서 써 주세요."}],
     stream=True,
 )
 

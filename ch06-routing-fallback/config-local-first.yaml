@@ -6,7 +6,8 @@ model_list:
       api_base: os.environ/VLLM_API_BASE
       reasoning_effort: none
       timeout: 10              # 로컬 서버가 응답하지 않으면 10초 만에 포기
-  # 같은 로컬 서버, 하지만 Fallback 없음: 민감정보 요청 전용 (외부로 절대 넘기지 않음)
+  # 같은 로컬 서버, 하지만 Fallback 없음
+  # 민감정보 요청 전용 (외부로 절대 넘기지 않음)
   - model_name: local-private
     litellm_params:
       model: hosted_vllm/qwen3.5-9b

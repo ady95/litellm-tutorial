@@ -14,7 +14,10 @@
         "allow_private_network": true,
         "default_request_timeout_in_seconds": 120
       },
-      "concurrency_and_buffer_size": { "concurrency": 2000, "buffer_size": 10000 }
+      "concurrency_and_buffer_size": {
+        "concurrency": 2000,
+        "buffer_size": 10000
+      }
     },
     "vllm": {
       "keys": [
@@ -23,14 +26,20 @@
           "value": "none",
           "models": ["qwen3.5-9b"],
           "weight": 1.0,
-          "vllm_key_config": { "url": "http://GPU_HOST:8000", "model_name": "qwen3.5-9b" }
+          "vllm_key_config": {
+            "url": "http://GPU_HOST:8000",
+            "model_name": "qwen3.5-9b"
+          }
         }
       ],
       "network_config": {
         "allow_private_network": true,
         "default_request_timeout_in_seconds": 120
       },
-      "concurrency_and_buffer_size": { "concurrency": 2000, "buffer_size": 10000 }
+      "concurrency_and_buffer_size": {
+        "concurrency": 2000,
+        "buffer_size": 10000
+      }
     }
   },
   "config_store": { "enabled": false },

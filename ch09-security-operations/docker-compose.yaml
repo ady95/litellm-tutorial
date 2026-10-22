@@ -21,7 +21,8 @@ services:
     env_file: .env
     environment:
       DATABASE_URL: postgresql://litellm:${POSTGRES_PASSWORD}@db:5432/litellm
-    networks: [edge, data]        # 포트를 공개하지 않는다. 외부 제공자 호출은 edge로
+    # 포트를 공개하지 않는다. 외부 제공자 호출은 edge로
+    networks: [edge, data]
     depends_on:
       db:
         condition: service_healthy

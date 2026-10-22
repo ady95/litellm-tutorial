@@ -69,13 +69,16 @@ def check_tool(model):
 def check_tool_roundtrip(model):
     """도구 호출을 받고, 도구 결과를 다시 보내 최종 답까지 받는다."""
     messages = [{"role": "user", "content": "서울 날씨 알려줘"}]
-    first = litellm.completion(model=model, messages=messages, tools=[WEATHER_TOOL])
+    first = litellm.completion(model=model, messages=messages,
+                               tools=[WEATHER_TOOL])
     message = first.choices[0].message
     call = message.tool_calls[0]
     messages.append(message.model_dump())
+    result = {"city": "서울", "temp_c": 18, "sky": "맑음"}
     messages.append({"role": "tool", "tool_call_id": call.id,
-                     "content": json.dumps({"city": "서울", "temp_c": 18, "sky": "맑음"}, ensure_ascii=False)})
-    final = litellm.completion(model=model, messages=messages, tools=[WEATHER_TOOL])
+                     "content": json.dumps(result, ensure_ascii=False)})
+    final = litellm.completion(model=model, messages=messages,
+                               tools=[WEATHER_TOOL])
     answer = final.choices[0].message.content or ""
     assert "18" in answer, f"도구 결과(18도)가 답에 없음: {answer[:60]}"
     return " ".join(answer.split())[:50]

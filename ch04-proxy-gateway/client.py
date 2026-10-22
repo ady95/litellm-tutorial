@@ -19,6 +19,7 @@ for model in ["fast", "smart", "gemini", "openrouter/openai/gpt-6.1-sol"]:
         messages=[{"role": "user", "content": "한 단어로: 맑은 하늘의 색은?"}],
     )
     response = raw.parse()
+    cost = float(raw.headers["x-litellm-response-cost"])
+    overhead = float(raw.headers["x-litellm-overhead-duration-ms"])
     print(f"{model:30} {response.choices[0].message.content:8}"
-          f" 비용=${float(raw.headers['x-litellm-response-cost']):.6f}"
-          f" 오버헤드={float(raw.headers['x-litellm-overhead-duration-ms']):.1f}ms")
+          f" 비용=${cost:.6f} 오버헤드={overhead:.1f}ms")

@@ -22,7 +22,8 @@ ADMIN = os.environ.get("LITELLM_ADMIN_URL", "http://127.0.0.1:8444")
 MASTER = {"Authorization": f"Bearer {os.environ['LITELLM_MASTER_KEY']}"}
 AGENT_TIMEOUT = 600
 
-TIER_TO_ALIAS = {"SIMPLE": "local", "MEDIUM": "fast", "COMPLEX": "smart", "REASONING": "smart"}
+TIER_TO_ALIAS = {"SIMPLE": "local", "MEDIUM": "fast",
+                 "COMPLEX": "smart", "REASONING": "smart"}
 RUBRIC = """다음 코딩 작업 지시의 난이도를 하나로 분류한다.
 SIMPLE: 함수 하나를 설명대로 구현, 명백한 한 줄 수정
 MEDIUM: 여러 조건이 있는 버그 수정, 기존 클래스에 기능 추가

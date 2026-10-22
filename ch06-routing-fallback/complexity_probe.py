@@ -11,7 +11,8 @@ from dotenv import load_dotenv
 load_dotenv()
 GATEWAY = os.environ.get("LITELLM_BASE_URL", "http://localhost:4000")
 HEADERS = {"Authorization": f"Bearer {os.environ['LITELLM_MASTER_KEY']}"}
-TIER_TO_ALIAS = {"SIMPLE": "local", "MEDIUM": "fast", "COMPLEX": "smart", "REASONING": "smart"}
+TIER_TO_ALIAS = {"SIMPLE": "local", "MEDIUM": "fast",
+                 "COMPLEX": "smart", "REASONING": "smart"}
 
 PROMPTS = [
     ("SIMPLE", "안녕하세요", "Hello"),

@@ -15,11 +15,14 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 load_dotenv()
-client = OpenAI(base_url=os.environ.get("LITELLM_BASE_URL", "http://localhost:4000"),
-                api_key=os.environ["LITELLM_MASTER_KEY"])
+client = OpenAI(
+    base_url=os.environ.get("LITELLM_BASE_URL", "http://localhost:4000"),
+    api_key=os.environ["LITELLM_MASTER_KEY"],
+)
 
 PRIVATE_ALIAS = "local-private"   # Gateway 설정에서 fallbacks에 넣지 않은 별칭
-TIER_TO_ALIAS = {"SIMPLE": "local", "MEDIUM": "fast", "COMPLEX": "smart", "REASONING": "smart"}
+TIER_TO_ALIAS = {"SIMPLE": "local", "MEDIUM": "fast",
+                 "COMPLEX": "smart", "REASONING": "smart"}
 SENSITIVE = [
     re.compile(r"\d{6}-[1-4]\d{6}"),            # 주민등록번호 형식
     re.compile(r"01[016789]-?\d{3,4}-?\d{4}"),  # 휴대전화 번호
@@ -37,7 +40,9 @@ SCHEMA = {
         "strict": True,
         "schema": {
             "type": "object",
-            "properties": {"tier": {"type": "string", "enum": list(TIER_TO_ALIAS)}},
+            "properties": {
+                "tier": {"type": "string", "enum": list(TIER_TO_ALIAS)},
+            },
             "required": ["tier"],
             "additionalProperties": False,
         },
@@ -48,7 +53,8 @@ SCHEMA = {
 def classify(prompt):
     response = client.chat.completions.create(
         model="local",
-        messages=[{"role": "system", "content": RUBRIC}, {"role": "user", "content": prompt}],
+        messages=[{"role": "system", "content": RUBRIC},
+                  {"role": "user", "content": prompt}],
         response_format=SCHEMA,
         max_tokens=50,
     )
@@ -56,10 +62,12 @@ def classify(prompt):
 
 
 def require_private_alias():
-    """Gateway에 local-private이 없으면 민감정보를 보낼 곳이 없으므로 시작하지 않는다."""
+    """Gateway에 local-private이 없으면 민감정보를 보낼 곳이 없으므로
+    시작하지 않는다."""
     names = {m.id for m in client.models.list().data}
     if PRIVATE_ALIAS not in names:
-        raise SystemExit(f"Gateway에 '{PRIVATE_ALIAS}' 별칭이 없습니다. config.yaml에 Fallback 없이 추가하세요.")
+        raise SystemExit(f"Gateway에 '{PRIVATE_ALIAS}' 별칭이 없습니다. "
+                         "config.yaml에 Fallback 없이 추가하세요.")
 
 
 def choose_alias(prompt):

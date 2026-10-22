@@ -13,6 +13,7 @@ client = OpenAI(
 
 response = client.chat.completions.create(
     model="gpt-6.1-sol",
-    messages=[{"role": "user", "content": "LiteLLM Proxy를 한 문장으로 소개해 주세요."}],
+    messages=[{"role": "user",
+               "content": "LiteLLM Proxy를 한 문장으로 소개해 주세요."}],
 )
 print(response.model, "|", response.choices[0].message.content)

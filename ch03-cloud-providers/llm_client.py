@@ -27,15 +27,18 @@ class Answer:
 
 def _resolve(value):
     """config의 'os.environ/이름' 표기를 실제 환경변수 값으로 바꾼다.
-    변수가 없거나 빈 값(공백만 있는 값 포함)이면 None으로 둔다. .env.example을 복사해 비워 둔 키도 여기에 해당한다."""
+    변수가 없거나 빈 값·공백이면 None으로 둔다.
+    .env.example을 복사해 비워 둔 키도 여기에 해당한다."""
     if isinstance(value, str) and value.startswith("os.environ/"):
-        return (os.environ.get(value.removeprefix("os.environ/")) or "").strip() or None
+        raw = os.environ.get(value.removeprefix("os.environ/")) or ""
+        return raw.strip() or None
     return value
 
 
 def load_models(path=CONFIG_PATH):
     raw = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
-    return {alias: {k: _resolve(v) for k, v in params.items()} for alias, params in raw.items()}
+    return {alias: {k: _resolve(v) for k, v in params.items()}
+            for alias, params in raw.items()}
 
 
 MODELS = load_models()
@@ -52,8 +55,10 @@ def _cost(response):
 def ask(alias, prompt, system=None, **options):
     params = MODELS[alias]
     missing = [k for k, v in params.items() if v is None]
-    if missing:   # 키가 없는 별칭은 쓸 때만 오류를 낸다 (다른 별칭은 그대로 쓸 수 있다)
-        raise RuntimeError(f"{alias}: models.yaml의 {missing} 값에 해당하는 환경변수가 없습니다")
+    # 키가 없는 별칭은 쓸 때만 오류를 낸다 (다른 별칭은 그대로 쓸 수 있다)
+    if missing:
+        raise RuntimeError(f"{alias}: models.yaml의 {missing} 값에 해당하는 "
+                           "환경변수가 없습니다")
     messages = [{"role": "system", "content": system}] if system else []
     messages.append({"role": "user", "content": prompt})
 

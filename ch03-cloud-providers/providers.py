@@ -22,4 +22,5 @@ for model in MODELS:
     response = litellm.completion(model=model, messages=messages)
     print(f"[{model}] {time.time() - start:.1f}초")
     print("  응답:", response.choices[0].message.content)
-    print("  토큰:", response.usage.prompt_tokens, "+", response.usage.completion_tokens)
+    usage = response.usage
+    print("  토큰:", usage.prompt_tokens, "+", usage.completion_tokens)

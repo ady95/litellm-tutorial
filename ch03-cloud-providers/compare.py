@@ -15,7 +15,8 @@ def main():
     args = parser.parse_args()
 
     print(f"질문: {args.prompt}\n")
-    print(f"{'별칭':8} {'모델':38} {'지연(중앙값)':>12} {'입력':>5} {'출력':>5} {'비용(USD)':>10}")
+    print(f"{'별칭':8} {'모델':38} {'지연(중앙값)':>12} "
+          f"{'입력':>5} {'출력':>5} {'비용(USD)':>10}")
     answers = {}
     for alias, params in MODELS.items():
         if None in params.values():   # 환경변수에 키가 없는 별칭은 건너뛴다
@@ -26,7 +27,8 @@ def main():
         answers[alias] = last.text
         median = statistics.median(r.seconds for r in runs)
         cost = f"{last.cost_usd:.6f}" if last.cost_usd is not None else "-"
-        print(f"{alias:8} {last.model:38} {median:>10.2f}초 {last.input_tokens:>5} {last.output_tokens:>5} {cost:>10}")
+        print(f"{alias:8} {last.model:38} {median:>10.2f}초 "
+              f"{last.input_tokens:>5} {last.output_tokens:>5} {cost:>10}")
 
     print()
     for alias, text in answers.items():

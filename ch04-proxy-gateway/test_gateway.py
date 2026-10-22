@@ -14,7 +14,8 @@ ALIASES = ["fast", "smart", "gemini"]
 
 @pytest.fixture(scope="module")
 def client():
-    return openai.OpenAI(base_url=BASE_URL, api_key=os.environ["LITELLM_MASTER_KEY"])
+    return openai.OpenAI(base_url=BASE_URL,
+                         api_key=os.environ["LITELLM_MASTER_KEY"])
 
 
 def test_aliases_are_listed(client):
@@ -26,7 +27,8 @@ def test_aliases_are_listed(client):
 def test_alias_answers(client, alias):
     response = client.chat.completions.create(
         model=alias,
-        messages=[{"role": "user", "content": "숫자 7을 아라비아 숫자 하나로만 답하세요."}],
+        messages=[{"role": "user",
+                   "content": "숫자 7을 아라비아 숫자 하나로만 답하세요."}],
     )
     assert "7" in response.choices[0].message.content
 

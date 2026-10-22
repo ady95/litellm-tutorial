@@ -45,7 +45,8 @@ def models():
 
 def budget():
     print("== 예산: max_budget 0.03달러, 호출당 0.01달러")
-    key = admin("/key/generate", {"key_alias": "budget-3c", "models": ["mock"], "max_budget": 0.03})["key"]
+    key = admin("/key/generate", {"key_alias": "budget-3c", "models": ["mock"],
+                              "max_budget": 0.03})["key"]
     for i in range(1, 8):
         code, message = chat(key, "mock")
         print(f"  {i}번째 HTTP {code} spend={spend(key):.4f} :: {message[:110]}")

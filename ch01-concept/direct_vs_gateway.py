@@ -17,9 +17,11 @@ GATEWAY = os.environ.get("LITELLM_BASE_URL", "http://localhost:4000")
 
 def direct_openai():
     r = httpx.post(
-        os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1") + "/chat/completions",
+        os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
+        + "/chat/completions",
         headers={"Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}"},
-        json={"model": "gpt-6-luna", "messages": [{"role": "user", "content": QUESTION}]},
+        json={"model": "gpt-6-luna",
+              "messages": [{"role": "user", "content": QUESTION}]},
         timeout=60,
     )
     return r.json()["choices"][0]["message"]["content"]
@@ -28,7 +30,8 @@ def direct_openai():
 def direct_anthropic():
     r = httpx.post(
         "https://api.anthropic.com/v1/messages",
-        headers={"x-api-key": os.environ["ANTHROPIC_API_KEY"], "anthropic-version": "2023-06-01"},
+        headers={"x-api-key": os.environ["ANTHROPIC_API_KEY"],
+                 "anthropic-version": "2023-06-01"},
         json={"model": "claude-sonnet-5-5", "max_tokens": 100,
               "messages": [{"role": "user", "content": QUESTION}]},
         timeout=60,
@@ -40,7 +43,8 @@ def via_gateway(alias):
     r = httpx.post(
         f"{GATEWAY}/v1/chat/completions",
         headers={"Authorization": f"Bearer {os.environ['LITELLM_MASTER_KEY']}"},
-        json={"model": alias, "messages": [{"role": "user", "content": QUESTION}]},
+        json={"model": alias,
+              "messages": [{"role": "user", "content": QUESTION}]},
         timeout=60,
     )
     return r.json()["choices"][0]["message"]["content"]
