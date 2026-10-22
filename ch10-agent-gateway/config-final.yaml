@@ -1,0 +1,43 @@
+# 10-5. 최종 운영 구성 (10-4 측정용 config.yaml에 local-private을 더한 것)
+# 정책(일반 작업 fast, 테스트 실패 시 smart, 민감 코드 local-private)은 Gateway 바깥에서 정한다
+model_list:
+  - model_name: local
+    litellm_params:
+      model: hosted_vllm/qwen3.5-9b
+      api_base: os.environ/VLLM_API_BASE
+      reasoning_effort: none
+    model_info:
+      max_input_tokens: 32768
+      max_output_tokens: 8192
+  # 같은 로컬 서버, Fallback 없음: 외부로 보낼 수 없는 코드 전용. local과 같은 한도를 둔다
+  - model_name: local-private
+    litellm_params:
+      model: hosted_vllm/qwen3.5-9b
+      api_base: os.environ/VLLM_API_BASE
+      reasoning_effort: none
+    model_info:
+      max_input_tokens: 32768
+      max_output_tokens: 8192
+  - model_name: fast
+    litellm_params:
+      model: openai/gpt-6-luna
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: smart
+    litellm_params:
+      model: anthropic/claude-sonnet-5-5
+      api_key: os.environ/ANTHROPIC_API_KEY
+  - model_name: gemini
+    litellm_params:
+      model: openrouter/google/gemini-3.8-flash
+      api_key: os.environ/OPENROUTER_API_KEY
+
+litellm_settings:
+  drop_params: true
+  request_timeout: 300
+  callbacks: ["prometheus"]
+
+# Fallback은 두지 않는다. local-private이 다른 별칭으로 넘어가면 안 되기 때문이다
+# (python ../ch06-routing-fallback/test_private_route.py 로 확인)
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY

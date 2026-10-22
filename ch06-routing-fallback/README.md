@@ -7,7 +7,7 @@
 장애를 마음대로 일으키는 가짜 OpenAI 호환 서버입니다. 모델 이름으로 동작을 정합니다(`ok`, `ok-d500`, `e429`, `e500`, `flaky50`, `hang`).
 
 ```bash
-uv pip install fastapi uvicorn httpx python-dotenv
+uv pip install fastapi uvicorn httpx python-dotenv openai pyyaml
 uvicorn mock_llm:app --host 0.0.0.0 --port 8901
 ```
 
@@ -23,5 +23,6 @@ uvicorn mock_llm:app --host 0.0.0.0 --port 8901
 | `config-mock-tuned.yaml` | 06-2 | 오류 유형별 재시도 정책 |
 | `experiments.py` | 06-1~06-3 | 실험 실행 (`python experiments.py all`) |
 | `config-auto.yaml`, `complexity_probe.py` | 06-4 | 내장 난이도 라우터(베타) 판정 확인 |
-| `policy_engine.py` | 06-4 | 민감정보 규칙 + 로컬 LLM 분류기 정책 엔진 |
+| `policy_engine.py` | 06-4 | 민감정보 규칙 + 로컬 LLM 분류기 정책 엔진. 민감정보는 Fallback 없는 `local-private`으로, 별칭이 없으면 시작하지 않음 |
+| `test_private_route.py` | 06-4, 06-5 | 민감정보 경로 회귀 시험 (서버 없이 `python test_private_route.py`) |
 | `config-local-first.yaml`, `failover_watch.py` | 06-5 | 로컬 우선 + 클라우드 Fallback 실습 |

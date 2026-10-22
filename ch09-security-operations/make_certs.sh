@@ -4,6 +4,7 @@
 # 사용: ./make_certs.sh <Gateway-서버-IP> [호스트명]
 set -euo pipefail
 IP=$1; NAME=${2:-litellm-gateway}
+umask 077                 # 개인 키는 만들 때부터 소유자만 읽게 (공개 인증서는 아래에서 644로)
 mkdir -p certs && cd certs
 
 # 1. 사설 CA (클라이언트가 신뢰할 인증서: ca.crt)

@@ -17,7 +17,10 @@ def main():
     print(f"질문: {args.prompt}\n")
     print(f"{'별칭':8} {'모델':38} {'지연(중앙값)':>12} {'입력':>5} {'출력':>5} {'비용(USD)':>10}")
     answers = {}
-    for alias in MODELS:
+    for alias, params in MODELS.items():
+        if None in params.values():   # 환경변수에 키가 없는 별칭은 건너뛴다
+            print(f"{alias:8} (키 없음, 건너뜀)")
+            continue
         runs = [ask(alias, args.prompt) for _ in range(args.repeat)]
         last = runs[-1]
         answers[alias] = last.text

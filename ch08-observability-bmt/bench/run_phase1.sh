@@ -3,7 +3,9 @@
 # 부하 발생 서버(Gateway와 다른 기기)에서 실행한다. Mock 서버(8901)도 이 서버에 띄워 둔다.
 #
 # 사용: GATEWAY_HOST=<Gateway 서버 주소> LITELLM_KEY=<마스터 키> ./run_phase1.sh <대상> [회차]
-#   대상: direct | litellm | bifrost   (한 번에 하나의 Gateway만 켜 둘 것)
+#   대상: direct | litellm-1w | litellm-4w | bifrost   (한 번에 하나의 Gateway만 켜 둘 것)
+#   litellm-1w·litellm-4w는 같은 주소로 보낸다. 측정 전에 Gateway 서버에서 워커 수를 바꿔 다시 띄운다
+#   (--num_workers 1 또는 4). 결과는 같은 phase1.jsonl에 대상 이름으로 쌓이고 summarize_phase1.py가 나눠 집계한다
 set -euo pipefail
 TARGET=$1
 ROUND=${2:-1}
@@ -13,8 +15,9 @@ mkdir -p results && chmod o+w results .
 
 case $TARGET in
   direct)  URL=http://localhost:8901;          MODEL=ok;        KEY="" ;;
-  litellm) URL=http://$GATEWAY_HOST:4000;      MODEL=bench;     KEY=$LITELLM_KEY ;;
+  litellm-1w|litellm-4w) URL=http://$GATEWAY_HOST:4000; MODEL=bench; KEY=$LITELLM_KEY ;;
   bifrost) URL=http://$GATEWAY_HOST:4001;      MODEL=openai/ok; KEY="" ;;
+  *) echo "알 수 없는 대상: $TARGET" >&2; exit 1 ;;
 esac
 
 k6() {  # $1=rate $2=duration

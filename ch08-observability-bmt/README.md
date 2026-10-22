@@ -6,7 +6,9 @@
 
 ```bash
 cd monitoring
-printf '%s' "$LITELLM_MASTER_KEY" > litellm_metrics_key && chmod 644 litellm_metrics_key
+# 내용은 마스터 키다. Prometheus 컨테이너 사용자(nobody, 65534)만 읽게 한다
+umask 077 && printf '%s' "$LITELLM_MASTER_KEY" > litellm_metrics_key
+sudo chown 65534:65534 litellm_metrics_key && sudo chmod 400 litellm_metrics_key
 echo "GRAFANA_ADMIN_PASSWORD=$(openssl rand -hex 12)" > .env
 docker compose up -d     # Prometheus :9095, Grafana :3005
 ```

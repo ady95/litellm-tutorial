@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # 10장. 에이전트 하나를 Gateway의 별칭 하나로 실행한다 (작업 폴더는 /work에 마운트)
 # 사용: GATEWAY_HOST=<주소> LITELLM_API_KEY=<가상 키> ./run_agent.sh <claude|codex|opencode> <별칭> <작업 폴더> "<지시문>"
+# 작업 폴더는 지워도 되는 복사본을 쓴다. 에이전트는 그 안의 파일을 권한 확인 없이 고친다
 set -euo pipefail
 AGENT=$1; MODEL=$2; WORK=$(realpath "$3"); PROMPT=$4
 HERE=$(dirname "$(realpath "$0")")
@@ -25,6 +26,7 @@ case $AGENT in
     ENVS=(-e LITELLM_API_KEY="$LITELLM_API_KEY") ;;
 esac
 
-chmod -R a+rwX "$WORK"
+# 컨테이너의 실행 사용자를 작업 폴더 소유자에 맞춘다 (폴더에 다른 사용자 쓰기 권한을 주지 않는다)
 docker run --rm -v "$WORK":/work -w /work -v "$CERT":/certs/gateway.crt:ro "${ENVS[@]}" \
+  -e AGENT_UID="$(stat -c %u "$WORK")" -e AGENT_GID="$(stat -c %g "$WORK")" \
   litellm-book-agents:1 "${CMD[@]}"

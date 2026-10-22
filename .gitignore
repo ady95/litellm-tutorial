@@ -9,3 +9,12 @@ venv/
 
 .DS_Store
 Thumbs.db
+
+# 실습이 만드는 인증서 개인 키·백업 (09장) — 커밋 금지
+certs/
+backup/
+*.key
+*.pem
+*.dump
+# 10장 실습에 복사하는 사설 CA 인증서
+ch10-agent-gateway/gateway.crt

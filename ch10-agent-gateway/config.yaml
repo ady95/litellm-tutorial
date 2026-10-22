@@ -1,4 +1,5 @@
-# 10장. 에이전트 공용 Gateway (9장 운영 구성의 config.yaml을 교체)
+# 10장. 에이전트 공용 Gateway, 10-4 측정용 (9장 운영 구성의 config.yaml을 교체)
+# 최종 운영에는 local-private을 더한 config-final.yaml을 쓴다 (10-5)
 model_list:
   - model_name: local
     litellm_params:

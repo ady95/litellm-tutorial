@@ -7,6 +7,7 @@
 `.env`에 `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `OPENROUTER_API_KEY`, `LITELLM_MASTER_KEY`를 넣고:
 
 ```bash
+docker rm -f litellm-proxy   # 2장의 컨테이너가 남아 있으면 이름·포트가 겹친다
 docker run -d --name litellm-proxy \
   -v $(pwd)/config.yaml:/app/config.yaml \
   --env-file .env \
@@ -22,5 +23,5 @@ docker run -d --name litellm-proxy \
 |---|---|---|
 | `config.yaml` | 04-1, 04-2 | 별칭 3개(fast/smart/gemini) + OpenRouter 와일드카드 |
 | `client.py` | 04-3 | OpenAI Python SDK로 호출, 응답 헤더의 비용·오버헤드 확인 |
-| `client.mjs` | 04-3 | OpenAI Node SDK로 호출 (`npm install openai && node client.mjs`) |
+| `client.mjs` | 04-3 | OpenAI Node SDK로 호출 (`npm install openai`, `node --env-file=.env client.mjs`) |
 | `test_gateway.py` | 04-4 | Gateway 통합 테스트 (`pytest -v test_gateway.py`) |

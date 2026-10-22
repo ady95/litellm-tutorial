@@ -26,9 +26,9 @@ class Answer:
 
 
 def _resolve(value):
-    """config의 'os.environ/이름' 표기를 실제 환경변수 값으로 바꾼다."""
+    """config의 'os.environ/이름' 표기를 실제 환경변수 값으로 바꾼다. 없으면 None으로 둔다."""
     if isinstance(value, str) and value.startswith("os.environ/"):
-        return os.environ[value.removeprefix("os.environ/")]
+        return os.environ.get(value.removeprefix("os.environ/"))
     return value
 
 
@@ -50,6 +50,9 @@ def _cost(response):
 
 def ask(alias, prompt, system=None, **options):
     params = MODELS[alias]
+    missing = [k for k, v in params.items() if v is None]
+    if missing:   # 키가 없는 별칭은 쓸 때만 오류를 낸다 (다른 별칭은 그대로 쓸 수 있다)
+        raise RuntimeError(f"{alias}: models.yaml의 {missing} 값에 해당하는 환경변수가 없습니다")
     messages = [{"role": "system", "content": system}] if system else []
     messages.append({"role": "user", "content": prompt})
 
