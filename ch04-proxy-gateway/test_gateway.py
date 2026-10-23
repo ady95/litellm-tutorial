@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BASE_URL = os.environ.get("LITELLM_BASE_URL", "http://localhost:4000")
-ALIASES = ["fast", "smart", "gemini"]
+# 검사할 별칭. 키가 하나뿐이면 ALIASES=fast처럼 등록한 별칭만 넘긴다
+ALIASES = os.environ.get("ALIASES", "fast,smart,gemini").split(",")
 
 
 @pytest.fixture(scope="module")

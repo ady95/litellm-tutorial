@@ -19,7 +19,11 @@ messages = [
 
 for model in MODELS:
     start = time.time()
-    response = litellm.completion(model=model, messages=messages)
+    try:
+        response = litellm.completion(model=model, messages=messages)
+    except Exception as e:   # 키가 없는 제공자는 오류만 보이고 다음으로
+        print(f"[{model}] 실패: {type(e).__name__}")
+        continue
     print(f"[{model}] {time.time() - start:.1f}초")
     print("  응답:", response.choices[0].message.content)
     usage = response.usage
