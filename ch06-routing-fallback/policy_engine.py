@@ -51,6 +51,7 @@ SCHEMA = {
 
 
 def classify(prompt):
+    # 로컬 모델에게 JSON Schema로 등급 하나만 받는다
     response = client.chat.completions.create(
         model="local",
         messages=[{"role": "system", "content": RUBRIC},

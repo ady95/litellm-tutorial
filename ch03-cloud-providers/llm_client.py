@@ -30,6 +30,7 @@ def _resolve(value):
     변수가 없거나 빈 값·공백이면 None으로 둔다.
     .env.example을 복사해 비워 둔 키도 여기에 해당한다."""
     if isinstance(value, str) and value.startswith("os.environ/"):
+        # 변수가 없으면 빈 문자열로 받고, 공백만 있어도 None으로 본다
         raw = os.environ.get(value.removeprefix("os.environ/")) or ""
         return raw.strip() or None
     return value
